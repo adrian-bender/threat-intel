@@ -4,31 +4,29 @@ import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    return process.env.CLIENTBOOK_DB_CACHING_ENABLED === 'true'
+    return process.env.DB_CACHING_ENABLED === 'true'
       ? {
           type: 'mysql',
           replication: {
             master: {
-              host: process.env.CLIENTBOOK_DB_WRITE_HOST,
-              port: parseInt(process.env.CLIENTBOOK_DB_PORT),
-              username: process.env.CLIENTBOOK_DB_USERNAME,
-              password: process.env.CLIENTBOOK_DB_PASSWORD,
-              database: process.env.CLIENTBOOK_DB_DATABASE,
+              host: process.env.DB_WRITE_HOST,
+              port: parseInt(process.env.DB_PORT),
+              username: process.env.DB_USERNAME,
+              password: process.env.DB_PASSWORD,
+              database: process.env.DB_DATABASE,
             },
             slaves: [
               {
-                host: process.env.CLIENTBOOK_DB_READ_HOST,
-                port: parseInt(process.env.CLIENTBOOK_DB_PORT),
-                username: process.env.CLIENTBOOK_DB_USERNAME,
-                password: process.env.CLIENTBOOK_DB_PASSWORD,
-                database: process.env.CLIENTBOOK_DB_DATABASE,
+                host: process.env.DB_READ_HOST,
+                port: parseInt(process.env.DB_PORT),
+                username: process.env.DB_USERNAME,
+                password: process.env.DB_PASSWORD,
+                database: process.env.DB_DATABASE,
               },
             ],
           },
-          logging: process.env.CLIENTBOOK_DB_LOG_QUERIES === 'true',
-          entities: [
-            './node_modules/@clientbook/clientbook-data-entities/lib/entities/clientbook/*{.ts,.js}',
-          ],
+          logging: process.env.DB_LOG_QUERIES === 'true',
+          entities: [],
           synchronize: false,
           ssl: false,
           debug: false,
@@ -54,26 +52,24 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
           type: 'mysql',
           replication: {
             master: {
-              host: process.env.CLIENTBOOK_DB_WRITE_HOST,
-              port: parseInt(process.env.CLIENTBOOK_DB_PORT),
-              username: process.env.CLIENTBOOK_DB_USERNAME,
-              password: process.env.CLIENTBOOK_DB_PASSWORD,
-              database: process.env.CLIENTBOOK_DB_DATABASE,
+              host: process.env.DB_WRITE_HOST,
+              port: parseInt(process.env.DB_PORT),
+              username: process.env.DB_USERNAME,
+              password: process.env.DB_PASSWORD,
+              database: process.env.DB_DATABASE,
             },
             slaves: [
               {
-                host: process.env.CLIENTBOOK_DB_READ_HOST,
-                port: parseInt(process.env.CLIENTBOOK_DB_PORT),
-                username: process.env.CLIENTBOOK_DB_USERNAME,
-                password: process.env.CLIENTBOOK_DB_PASSWORD,
-                database: process.env.CLIENTBOOK_DB_DATABASE,
+                host: process.env.DB_READ_HOST,
+                port: parseInt(process.env.DB_PORT),
+                username: process.env.DB_USERNAME,
+                password: process.env.DB_PASSWORD,
+                database: process.env.DB_DATABASE,
               },
             ],
           },
-          logging: process.env.CLIENTBOOK_DB_LOG_QUERIES === 'true',
-          entities: [
-            './node_modules/@clientbook/clientbook-data-entities/lib/entities/clientbook/*{.ts,.js}',
-          ],
+          logging: process.env.DB_LOG_QUERIES === 'true',
+          entities: [],
           synchronize: false,
           ssl: false,
           debug: false,
