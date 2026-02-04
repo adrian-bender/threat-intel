@@ -27,7 +27,6 @@ A REST API for threat intelligence analysis, built with NestJS and TypeScript. T
 ### 1. Install Dependencies
 
 ```bash
-cd /home/adrian/src/th
 npm install
 ```
 

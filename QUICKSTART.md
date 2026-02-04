@@ -12,7 +12,6 @@ npm --version   # Should be 7+
 ## Step 1: Install Dependencies (if not already done)
 
 ```bash
-cd /home/adrian/src/th
 npm install
 ```
 
