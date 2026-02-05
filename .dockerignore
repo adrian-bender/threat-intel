@@ -1,0 +1,7 @@
+node_modules
+dist
+k8s
+.github
+.git
+.docker
+.gitignore
