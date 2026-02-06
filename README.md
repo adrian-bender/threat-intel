@@ -1,6 +1,22 @@
 # Threat Intelligence Dashboard API
 
-A REST API for threat intelligence analysis, built with NestJS and TypeScript. This API powers a security analyst dashboard for investigating malicious indicators (IPs, domains, file hashes) and understanding relationships between threats.
+## Overview
+
+This project is a backend API for a threat intelligence dashboard.
+It demonstrates how to model, query, and expose relationships between
+threat indicators (IPs, domains, hashes), campaigns, and threat actors.
+
+The focus of this implementation is:
+- data modeling and query design
+- API ergonomics for analysts
+- performance-aware pagination and aggregation
+
+## How to Review This Repository
+
+Recommended order:
+1. README.md – scope, assumptions, and how to run the project
+2. ARCHITECTURE.md – system design and data model
+3. SQL_QUERIES.md – database query examples
 
 ## Features
 
@@ -16,7 +32,24 @@ A REST API for threat intelligence analysis, built with NestJS and TypeScript. T
 - **Validation**: class-validator, class-transformer
 - **Logging**: Winston with ECS format
 
-## Prerequisites
+## Running the Project
+
+### Option A: Run with Docker (Recommended)
+
+Using Docker avoids local environment issues and ensures consistent setup.
+
+```bash
+docker build -t threat-intel .
+docker run -p 8080:8080 threat-intel
+```
+
+The API will be available at:
+
+`http://localhost:8080`
+
+### Option B: Run Locally (Without Docker)
+
+### Prerequisites
 
 - Node.js (v16 or higher)
 - npm or yarn
@@ -35,11 +68,8 @@ npm install
 The database schema is already defined in `schema.sql`. To create and seed the database with sample data:
 
 ```bash
-# Install sqlite3 and uuid for the seed script
-npm install --save-dev sqlite3 uuid
-
 # Run the seed script to create and populate the database
-node threat-intel/seed-database.js
+node src/threat-intel/seed-database.js
 ```
 
 This will create `threat_intel.db` with:
@@ -286,30 +316,6 @@ Import the following collection or create requests manually:
 - All endpoints use GET method
 - No authentication required (as per requirements)
 
-## Project Structure
-
-```
-threat-intel/
-├── dto/                              # Data Transfer Objects
-│   ├── campaign-indicators-query.dto.ts
-│   ├── campaign-metadata.dto.ts
-│   ├── campaign-summary.dto.ts
-│   ├── campaign-timeline.dto.ts
-│   ├── dashboard-query.dto.ts
-│   ├── dashboard-summary.dto.ts
-│   ├── indicator-detail.dto.ts
-│   ├── indicator-search-item.dto.ts
-│   ├── paginated-indicators.dto.ts
-│   ├── related-indicator.dto.ts
-│   ├── search-indicators-query.dto.ts
-│   └── threat-actor-summary.dto.ts
-├── threat-intel.controller.ts        # API route handlers
-├── threat-intel.service.ts           # Business logic and database queries
-├── threat-intel.module.ts            # NestJS module definition
-├── seed-database.js                  # Database seeding script
-└── README.md                         # This file
-```
-
 ## Error Handling
 
 The API returns appropriate HTTP status codes and error messages:
@@ -404,6 +410,3 @@ If port 8080 is already in use:
 
 This project is part of a technical assessment and is provided as-is for evaluation purposes.
 
-## Contact
-
-For questions or issues, please refer to the project documentation or contact the development team.

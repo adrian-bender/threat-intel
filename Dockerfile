@@ -1,31 +1,19 @@
-# ---------- Build stage ----------
-FROM node:20-alpine AS builder
-
-WORKDIR /app
-
-# Install deps first (better caching)
-COPY package*.json ./
-RUN npm ci
-
-# Copy source
-COPY . .
-
-# Build NestJS app
-RUN npm run build
-
-
 # ---------- Runtime stage ----------
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy only what we need
-COPY package*.json ./
-RUN npm ci --omit=dev
+COPY package.json package-lock.json ./
+RUN npm install
 
-COPY --from=builder /app/dist ./dist
+COPY . .
 
-# NestJS default port
-EXPOSE 3000
+ENV NODE_ENV=development
+ENV DATABASE_PATH=threat_intel.db
+ENV LOG_LEVEL=debug
 
-CMD ["node", "dist/main.js"]
+RUN node src/threat-intel/seed-database.js
+
+EXPOSE 8080
+
+CMD ["npm", "run", "start:dev"]

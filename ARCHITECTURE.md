@@ -8,56 +8,56 @@ The Threat Intelligence API is built using NestJS following a modular, layered a
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                        Client Layer                          │
+│                        Client Layer                         │
 │  (Security Analysts, Dashboard UI, External Systems)        │
 └────────────────────────┬────────────────────────────────────┘
                          │ HTTP/REST
 ┌────────────────────────▼────────────────────────────────────┐
-│                   API Gateway / Nginx                        │
-│              (Authentication handled upstream)               │
+│                   API Gateway / Nginx                       │
+│              (Authentication handled upstream)              │
 └────────────────────────┬────────────────────────────────────┘
                          │
 ┌────────────────────────▼────────────────────────────────────┐
-│                     NestJS Application                       │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │              App Module (app.module.ts)              │  │
-│  │  - ConfigModule (Global)                             │  │
-│  │  - WinstonModule (Logging)                           │  │
-│  │  - TypeOrmModule (Database)                          │  │
-│  │  - ContextModule, AuthModule, ClientsModule          │  │
-│  │  - ThreatIntelModule ← NEW                           │  │
-│  └──────────────────────┬───────────────────────────────┘  │
-│                         │                                    │
-│  ┌──────────────────────▼───────────────────────────────┐  │
-│  │         ThreatIntelModule (threat-intel.module.ts)   │  │
-│  │                                                       │  │
-│  │  ┌─────────────────────────────────────────────┐    │  │
-│  │  │  ThreatIntelController                      │    │  │
-│  │  │  - GET /api/indicators/:id                  │    │  │
-│  │  │  - GET /api/indicators/search               │    │  │
-│  │  │  - GET /api/campaigns/:id/indicators        │    │  │
-│  │  │  - GET /api/dashboard/summary               │    │  │
-│  │  └──────────────┬──────────────────────────────┘    │  │
-│  │                 │                                     │  │
-│  │  ┌──────────────▼──────────────────────────────┐    │  │
-│  │  │  ThreatIntelService                         │    │  │
-│  │  │  - getIndicatorById()                       │    │  │
-│  │  │  - searchIndicators()                       │    │  │
-│  │  │  - getCampaignIndicators()                  │    │  │
-│  │  │  - getDashboardSummary()                    │    │  │
-│  │  └──────────────┬──────────────────────────────┘    │  │
-│  │                 │                                     │  │
-│  │  ┌──────────────▼──────────────────────────────┐    │  │
-│  │  │  DTOs (Data Transfer Objects)               │    │  │
-│  │  │  - Request validation                       │    │  │
-│  │  │  - Response serialization                   │    │  │
-│  │  │  - Type safety                              │    │  │
-│  │  └─────────────────────────────────────────────┘    │  │
-│  └───────────────────────────────────────────────────────┘  │
+│                     NestJS Application                      │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │              App Module (app.module.ts)              │   │
+│  │  - ConfigModule (Global)                             │   │
+│  │  - WinstonModule (Logging)                           │   │
+│  │  - TypeOrmModule (Database)                          │   │
+│  │  - ContextModule, AuthModule, ClientsModule          │   │
+│  │  - ThreatIntelModule                                 │   │
+│  └──────────────────────┬───────────────────────────────┘   │
+│                         │                                   │
+│  ┌──────────────────────▼───────────────────────────────┐   │
+│  │         ThreatIntelModule (threat-intel.module.ts)   │   │
+│  │                                                      │   │
+│  │  ┌─────────────────────────────────────────────┐     │   │
+│  │  │  ThreatIntelController                      │     │   │
+│  │  │  - GET /api/indicators/:id                  │     │   │
+│  │  │  - GET /api/indicators/search               │     │   │
+│  │  │  - GET /api/campaigns/:id/indicators        │     │   │
+│  │  │  - GET /api/dashboard/summary               │     │   │
+│  │  └──────────────┬──────────────────────────────┘     │   │
+│  │                 │                                    │   │
+│  │  ┌──────────────▼──────────────────────────────┐     │   │
+│  │  │  ThreatIntelService                         │     │   │
+│  │  │  - getIndicatorById()                       │     │   │
+│  │  │  - searchIndicators()                       │     │   │
+│  │  │  - getCampaignIndicators()                  │     │   │
+│  │  │  - getDashboardSummary()                    │     │   │
+│  │  └──────────────┬──────────────────────────────┘     │   │
+│  │                 │                                    │   │
+│  │  ┌──────────────▼──────────────────────────────┐     │   │
+│  │  │  DTOs (Data Transfer Objects)               │     │   │
+│  │  │  - Request validation                       │     │   │
+│  │  │  - Response serialization                   │     │   │
+│  │  │  - Type safety                              │     │   │
+│  │  └─────────────────────────────────────────────┘     │   │
+│  └──────────────────────────────────────────────────────┘   │
 └────────────────────────┬────────────────────────────────────┘
                          │ TypeORM / Raw SQL
 ┌────────────────────────▼────────────────────────────────────┐
-│                   SQLite Database                            │
+│                   SQLite Database                           │
 │  - threat_actors (50 records)                               │
 │  - campaigns (100 records)                                  │
 │  - indicators (10,000 records)                              │
@@ -243,17 +243,17 @@ Each layer has single responsibility and clear boundaries.
 
 ```
 threat-intel/
-├── dto/                          # Data Transfer Objects
-│   ├── *-query.dto.ts           # Request DTOs (query params)
-│   ├── *-summary.dto.ts         # Response DTOs (nested objects)
-│   └── *.dto.ts                 # Main response DTOs
-├── threat-intel.controller.ts    # HTTP layer
-├── threat-intel.service.ts       # Business logic
-├── threat-intel.module.ts        # Module definition
-├── seed-database.js              # Database seeding
-├── README.md                     # User documentation
-├── SQL_QUERIES.md                # Query documentation
-└── ARCHITECTURE.md               # This file
+├── ARCHITECTURE.md        # High-level system design, data model, and query strategy
+├── Dockerfile             # Container definition for consistent, reproducible setup
+├── node_modules/          # Installed dependencies (not committed)
+├── package-lock.json      # Locked dependency tree for reproducible installs
+├── package.json           # Project metadata, scripts, and dependencies
+├── README.md              # Project overview, setup instructions, and review guide
+├── schema.sql             # Database schema definition and table structure
+├── SQL_QUERIES.md         # Documentation of core SQL queries and optimization notes
+├── src/                   # Application source code (NestJS modules, services, controllers)
+├── tsconfig.build.json    # TypeScript configuration for production builds
+└── tsconfig.json          # Base TypeScript compiler configuration
 ```
 
 ## Database Design

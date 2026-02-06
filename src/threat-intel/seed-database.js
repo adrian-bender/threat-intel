@@ -203,10 +203,10 @@ async function seedDatabase() {
         value = `${randomInt(1, 255)}.${randomInt(0, 255)}.${randomInt(0, 255)}.${randomInt(1, 255)}`;
         break;
       case 'domain':
-        value = `malicious-${randomInt(1000, 9999)}.example.com`;
+        value = `malicious-${randomInt(1000, 999999999999)}.example.com`;
         break;
       case 'url':
-        value = `https://phishing-${randomInt(1000, 9999)}.com/login`;
+        value = `https://phishing-${randomInt(1000, 999999999999)}.com/login`;
         break;
       case 'hash':
         value = Array.from({length: 64}, () => Math.floor(Math.random() * 16).toString(16)).join('');

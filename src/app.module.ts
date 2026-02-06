@@ -1,5 +1,5 @@
 import { HttpModule } from '@nestjs/axios';
-import { Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TerminusModule } from '@nestjs/terminus';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -56,4 +56,4 @@ loggerConfig = {
   ],
   controllers: [],
 })
-export class AppModule implements NestModule {}
+export class AppModule {}
